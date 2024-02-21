@@ -2,6 +2,16 @@ from . import db
 from flask_login import UserMixin
 from sqlalchemy.sql import func
 
+class BMI(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    weight = db.Column(db.Integer)
+    height = db.Column(db.Integer)
+    age = db.Column(db.Integer)
+    # bmi = db.Column(db.Integer)
+    gender = db.Column(db.String(150))
+    date = db.Column(db.DateTime(timezone=True), default=func.now())
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
 
 class Note(db.Model):
     id = db.Column(db.Integer, primary_key=True)

@@ -1,6 +1,100 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
 %}
-<h1 align="center">Notes</h1>
+
+<h1 align="center">Welcome to the Fitness Tracker</h1>
+
+<h3>
+  <form method="POST">
+    <label for="weight">Weight:</label>
+    <input type="number" id="weight" name="weight" required />
+    <br />
+    <label for="height">Height:</label>
+    <input type="number" id="height" name="height" required />
+    <br />
+    <label for="age">Age:</label>
+    <input type="number" id="age" name="age" required />
+    <br />
+    <button type="submit">Submit</button>
+  </form>
+</h3>
+
+<!-- abdominals
+abductors
+adductors
+biceps
+calves
+chest
+forearms
+glutes
+hamstrings
+lats
+lower_back
+middle_back
+neck
+quadriceps
+traps
+triceps -->
+<h2>
+  <label for="muscle">Muscle:</label>
+</h2>
+<select>
+  <option value="abdominals" id="abdominals">Abdominals</option>
+  <option value="abductors" id="abductors">Abductors</option>
+  <option value="adductors" id="adductors">Adductors</option>
+  <option value="biceps" id="biceps">Biceps</option>
+  <option value="calves" id="calves">Calves</option>
+  <option value="chest" id="chest">Chest</option>
+  <option value="forearms" id="forearms">Forearms</option>
+  <option value="glutes" id="glutes">Glutes</option>
+  <option value="hamstrings" id="hamstrings">Hamstrings</option>
+  <option value="lats" id="lats">Lats</option>
+  <option value="lower_back" id="lower_back">Lower Back</option>
+  <option value="middle_back" id="middle_back">Middle Back</option>
+  <option value="neck" id="neck">Neck</option>
+  <option value="quadriceps" id="quadriceps">Quadriceps</option>
+  <option value="traps" id="traps">Traps</option>
+  <option value="triceps" id="triceps">Triceps</option>
+</select>
+
+<h2>
+  <label for="workout">Workout:</label>
+</h2>
+
+<div>
+  <h2>Workout 1</h2>
+  <h3>Concentration curl</h3>
+  <h3>Equipment: Dumbbell</h3>
+  <h5>dificulty: 2</h5>
+  <p>
+    Stand up with your torso upright and a dumbbell on each hand being held at
+    arms length. The elbows should be close to the torso. The palms of the hands
+    should be facing your torso. This will be your starting position. Now, while
+    holding your upper arm stationary, exhale and curl the weight forward while
+    contracting the biceps. Continue to raise the weight until the biceps are
+    fully contracted and the dumbbell is at shoulder level. Hold the contracted
+    position for a brief moment as you squeeze the biceps. Tip: Focus on keeping
+    the elbow stationary and only moving your forearm. After the brief pause,
+    inhale and slowly begin the lower the dumbbells back down to the starting
+    position. Repeat for the recommended amount of repetitions. Variations:
+    There are many possible variations for this movement. For instance, you can
+    perform the exercise sitting down on a bench with or without back support
+    and you can also perform it by alternating arms; first lift the right arm
+    for one repetition, then the left, then the right, etc.
+  </p>
+</div>
+
+<ul class="list-group list-group-flush" id="notes">
+  {% for note in user.notes %}
+  <li class="list-group-item">
+    {{ note.data }}
+    <button type="button" class="close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </li>
+  {% endfor %}
+</ul>
+
+<!-- <h1 align="center">Notes</h1>
 <ul class="list-group list-group-flush" id="notes">
   {% for note in user.notes %}
   <li class="list-group-item">
@@ -17,5 +111,5 @@
   <div align="center">
     <button type="submit" class="btn btn-primary">Add Note</button>
   </div>
-</form>
+</form> -->
 {% endblock %}

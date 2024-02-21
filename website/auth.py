@@ -19,7 +19,7 @@ def login():
             if bcrypt.checkpw(password.encode('utf-8'), user.password):
                 flash('Logged in successfully!', category='success')
                 login_user(user, remember=True)
-                return redirect(url_for('views.home'))
+                return redirect(url_for('views.bmi'))
             else:
                 flash('Incorrect password, try again.', category='error')
         else:
@@ -57,13 +57,13 @@ def sign_up():
         else:
             new_user = User(
                 email=email,
-                name=name,
+                first_name =name,
                 password=bcrypt.hashpw(password1.encode('utf-8'),bcrypt.gensalt())
             )
             db.session.add(new_user)
             db.session.commit()
             login_user(new_user, remember=True)
             flash('Account created!', category='success')
-            return redirect(url_for('views.home'))
+            return redirect(url_for('views.bmi'))
 
     return render_template("sign_up.html", user=current_user)
