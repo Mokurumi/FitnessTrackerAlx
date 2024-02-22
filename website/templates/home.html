@@ -1,10 +1,12 @@
-{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
-%}
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 <h1 align="center">Welcome to the Fitness Tracker</h1>
 
-<h3>
-  <form method="POST">
+<form method="POST">
+  <h3>
     <label for="weight">Weight:</label>
     <input type="number" id="weight" name="weight" required />
     <br />
@@ -15,53 +17,34 @@
     <input type="number" id="age" name="age" required />
     <br />
     <button type="submit">Submit</button>
-  </form>
-</h3>
+  </h3>
 
-<!-- abdominals
-abductors
-adductors
-biceps
-calves
-chest
-forearms
-glutes
-hamstrings
-lats
-lower_back
-middle_back
-neck
-quadriceps
-traps
-triceps -->
-<h2>
-  <label for="muscle">Muscle:</label>
-</h2>
-<select>
-  <option value="abdominals" id="abdominals">Abdominals</option>
-  <option value="abductors" id="abductors">Abductors</option>
-  <option value="adductors" id="adductors">Adductors</option>
-  <option value="biceps" id="biceps">Biceps</option>
-  <option value="calves" id="calves">Calves</option>
-  <option value="chest" id="chest">Chest</option>
-  <option value="forearms" id="forearms">Forearms</option>
-  <option value="glutes" id="glutes">Glutes</option>
-  <option value="hamstrings" id="hamstrings">Hamstrings</option>
-  <option value="lats" id="lats">Lats</option>
-  <option value="lower_back" id="lower_back">Lower Back</option>
-  <option value="middle_back" id="middle_back">Middle Back</option>
-  <option value="neck" id="neck">Neck</option>
-  <option value="quadriceps" id="quadriceps">Quadriceps</option>
-  <option value="traps" id="traps">Traps</option>
-  <option value="triceps" id="triceps">Triceps</option>
-</select>
+  <h2>
+    <label for="muscle">Muscle:</label>
+  </h2>
+  <select id="muscle" onchange="getCaloriesBurned()">
+    <option value="abdominals" id="abdominals">Abdominals</option>
+    <option value="abductors" id="abductors">Abductors</option>
+    <option value="adductors" id="adductors">Adductors</option>
+    <option value="biceps" id="biceps">Biceps</option>
+    <option value="calves" id="calves">Calves</option>
+    <option value="chest" id="chest">Chest</option>
+    <option value="forearms" id="forearms">Forearms</option>
+    <option value="glutes" id="glutes">Glutes</option>
+    <option value="hamstrings" id="hamstrings">Hamstrings</option>
+    <option value="lats" id="lats">Lats</option>
+    <option value="lower_back" id="lower_back">Lower Back</option>
+    <option value="middle_back" id="middle_back">Middle Back</option>
+    <option value="neck" id="neck">Neck</option>
+    <option value="quadriceps" id="quadriceps">Quadriceps</option>
+    <option value="traps" id="traps">Traps</option>
+    <option value="triceps" id="triceps">Triceps</option>
+  </select>
+  <br />
+</form>
 
-<h2>
-  <label for="workout">Workout:</label>
-</h2>
-
-<div>
-  <h2>Workout 1</h2>
+<div id="workoutSection">
+  <!-- <h2>Workout 1</h2>
   <h3>Concentration curl</h3>
   <h3>Equipment: Dumbbell</h3>
   <h5>dificulty: 2</h5>
@@ -80,7 +63,7 @@ triceps -->
     perform the exercise sitting down on a bench with or without back support
     and you can also perform it by alternating arms; first lift the right arm
     for one repetition, then the left, then the right, etc.
-  </p>
+  </p> -->
 </div>
 
 <ul class="list-group list-group-flush" id="notes">
@@ -112,4 +95,58 @@ triceps -->
     <button type="submit" class="btn btn-primary">Add Note</button>
   </div>
 </form> -->
+
+<script>
+  function getCaloriesBurned () {
+    var selectedMuscle = document.getElementById("muscle").value;
+    var apiUrl = "https://api.api-ninjas.com/v1/exercises?muscle=" + selectedMuscle;
+    var apiKey = "+8B6pELyu/5ydbMwwsAqIg==SPOaULMXs4LbZSgx";
+
+    fetch(apiUrl, {
+      method: "GET",
+      headers: {
+        'X-Api-Key': apiKey,
+      },
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then(data => {
+        // console.log("Calories burned:", data);
+        updateWorkoutSection(data);
+      })
+      .catch(error => {
+        console.error("Error:", error);
+      });
+  }
+
+  function updateWorkoutSection (data) {
+    var workoutSection = document.getElementById("workoutSection");
+    workoutSection.innerHTML = ""; // Clear existing content
+
+    if (data && data.length > 0) {
+      var workoutHeader = document.createElement("h2");
+      workoutHeader.textContent = "Workout";
+      workoutSection.appendChild(workoutHeader);
+
+      data.forEach(item => {
+        var workoutDiv = document.createElement("div");
+        workoutDiv.innerHTML = `
+          <h3>${item.name}</h3>
+          <h4>Equipment: ${item.equipment}</h4>
+          <h5>Difficulty: ${item.difficulty}</h5>
+          <p>${item.instructions}</p>
+        `;
+        workoutSection.appendChild(workoutDiv);
+      });
+    } else {
+      // Handle the case when there is no data or an empty array
+      workoutSection.innerHTML = "<p>No workout information available for selected muscle.</p>";
+    }
+  }
+</script>
+
 {% endblock %}
