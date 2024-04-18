@@ -1,4 +1,0 @@
-flask
-Flask-MySQL
-flask-login
-requests
